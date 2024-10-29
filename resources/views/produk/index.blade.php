@@ -1,67 +1,73 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-dark text-light">
-                    <div class="float-start mt-1">
-                        {{ __('Produk') }}
-                    </div>
-                    <div class="float-end">
-                        <a href="{{ route('produk.create') }}" class="btn btn-sm btn-outline-light">Tambah Data</a>
+<div class="container mx-auto">
+    <div class="flex justify-center">
+        <div class="w-full">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="bg-gray-800 text-white px-6 py-3">
+                    <div class="flex justify-between items-center">
+                        <div class="font-semibold">
+                            {{ __('Produk') }}
+                        </div>
+                        <div>
+                            <a href="{{ route('produk.create') }}" class="text-sm bg-gray-800 border border-white text-white hover:bg-blue-500 rounded-lg transition px-3 py-1">Tambah Data</a>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto border-collapse border border-gray-300">
                             <thead>
-                                <tr class="text-center">
-                                    <th>No</th>
-                                    <th>Nama Produk</th>
-                                    <th>Harga</th>
-                                    <th>Stok</th>
-                                    <th>Kategori</th>
-                                    <th>Deskripsi</th>
-                                    <th>Aksi</th>
+                                <tr class="text-center bg-gray-100">
+                                    <th class="border px-4 py-2">No</th>
+                                    <th class="border px-4 py-2">Nama Produk</th>
+                                    <th class="border px-4 py-2">Harga</th>
+                                    <th class="border px-4 py-2">Stok</th>
+                                    <th class="border px-4 py-2">Kategori</th>
+                                    <th class="border px-4 py-2">Deskripsi</th>
+                                    <th class="border px-4 py-2">Images</th>
+                                    <th class="border px-4 py-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
                                 @forelse ($produk as $data)
                                 <tr class="text-center">
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $data->nama_produk }}</td>
-                                    <td>Rp.{{ $data->harga }}</td>
-                                    <td>{{ $data->stok }}</td>
-                                    <td>{{ $data->kategori->nama_kategori }}</td>
-                                    <td>{{ $data->deskripsi }}</td>
-                                    {{-- <td>
-                                        <img src="{{ asset('/storage/barangs/' . $data->image) }}" class="rounded"
-                                            style="width: 150px">
-                                    </td> --}}
-                                    <td>
+                                    <td class="border px-4 py-2">{{ $no++ }}</td>
+                                    <td class="border px-4 py-2">{{ $data->nama_produk }}</td>
+                                    <td class="border px-4 py-2">Rp.{{ $data->harga }}</td>
+                                    <td class="border px-4 py-2">{{ $data->stok }}</td>
+                                    <td class="border px-4 py-2">{{ $data->kategori->nama_kategori }}</td>
+                                    <td class="border px-4 py-2">{{ $data->deskripsi }}</td>
+                                    <td class="border px-4 py-2">
+                                        <center><img src="{{asset('images/produk/'.$data->foto)}}" class="w-32 h-24 object-cover"></center>
+                                    </td>
+                                    <td class="border px-4 py-2">
                                         <form action="{{ route('produk.destroy', $data->id) }}" method="POST" class="text-center">
                                             @csrf
                                             @method('DELETE')
-                                            <a href="{{ route('produk.edit', $data->id) }}"
-                                                class="btn btn-sm btn-outline-success">Edit</a> |
-                                            <button type="submit" onsubmit="return confirm('Are You Sure ?');"
-                                                class="btn btn-sm btn-outline-danger">Hapus</button>
+                                            <div class="mt-3">
+                                                <a href="{{ route('produk.edit', $data->id) }}" class="text-sm border border-green-700 text-green-700 hover:text-white hover:bg-green-700 px-3 py-2 rounded-lg transition">Edit</a> |
+                                                <button type="submit" class="text-sm border border-red-700 text-red-700 hover:text-white hover:bg-red-700 px-3 py-2 rounded-lg transition" onclick="return confirm('Are You Sure?');">Hapus</button>
+                                            </div>
                                         </form>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">
-                                        Data data belum Tersedia.
+                                    <td colspan="8" class="text-center border px-4 py-2">
+                                        Data data belum tersedia.
                                     </td>
                                 </tr>
                                 @endforelse
                             </tbody>
                         </table>
-                        {{-- {!! $produk->withQueryString()->links('pagination::bootstrap-4') !!} --}}
+
+                        <!-- Pagination -->
+                        <div class="mt-4">
+                            {!! $produk->withQueryString()->links('pagination::tailwind') !!}
+                        </div>
                     </div>
                 </div>
             </div>

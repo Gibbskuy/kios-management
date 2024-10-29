@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use App\Models\Produk;
-use App\Models\Kategori ;
-use App\Http\Requests\StoreProdukRequest;
-use App\Http\Requests\UpdateProdukRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -13,8 +12,8 @@ class ProdukController extends Controller
 
     public function index()
     {
+        $produk = Produk::with('kategori')->paginate(4);
         $kategori = Kategori::all();
-        $produk = Produk::all();
         return view('produk.index', compact('produk', 'kategori'));
     }
 
@@ -30,10 +29,11 @@ class ProdukController extends Controller
         //validate form
         $this->validate($request, [
             'nama_produk' => 'required',
-            'stok' => 'required',
-            'harga' => 'required',
+            'stok' => 'required|numeric|min:1',
+            'harga' => 'required|numeric|min:1',
             'deskripsi' => 'required',
             'id_kategori' => 'required',
+            'foto' => 'required|max:2048|mimes:png,jpg',
 
         ]);
 
@@ -44,9 +44,16 @@ class ProdukController extends Controller
         $produk->deskripsi = $request->deskripsi;
         $produk->id_kategori = $request->id_kategori;
 
+        if ($request->hasFile('foto')) {
+            $img = $request->file('foto');
+            $name = rand(1000, 9999) . $img->getClientOriginalName();
+            $img->move('images/produk/', $name);
+            $produk->foto = $name;
+        }
+
         $produk->save();
         return redirect()->route('produk.index')
-        ->with('Berhasil', 'Produk Berhasil dibuat.');
+            ->with('Berhasil', 'Produk Berhasil dibuat.');
     }
 
     public function show($id)
@@ -78,6 +85,13 @@ class ProdukController extends Controller
         $produk->deskripsi = $request->deskripsi;
         $produk->id_kategori = $request->id_kategori;
 
+        if ($request->hasFile('foto')) {
+            $img = $request->file('foto');
+            $name = rand(1000, 9999) . $img->getClientOriginalName();
+            $img->move('images/produk/', $name);
+            $produk->foto = $name;
+        }
+
         $produk->save();
         return redirect()->route('produk.index');
 
@@ -86,9 +100,13 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
+        if ($produk->foto && file_exists(public_path ('images/produk/' . $produk->foto)))
+            unlink(public_path( 'images/produk/' .$produk->foto));
+
         $produk->delete();
-        // Alert::success('Success', 'Data Ini Telah Di Hapus')->autoclose(2000);
         return redirect()->route('produk.index')
-        ->with('Berhasil', 'Produk Berhasil dihapus');
+            ->with('Berhasil', 'Produk Berhasil dihapus');
+
     }
+
 }

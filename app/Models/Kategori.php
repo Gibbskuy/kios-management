@@ -10,7 +10,7 @@ class Kategori extends Model
     use HasFactory;
 
     public function Produk (){
-        return $this->hasMany(Produk::class, 'id_kategori');
+        return $this->hasMany(Produk::class);
     }
 
 }

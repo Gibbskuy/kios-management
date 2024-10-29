@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('harga');
             $table->text('deskripsi');
             $table->foreignId('id_kategori')->constrained('kategoris')->onDelete('cascade');
+            $table->string('foto');
             $table->timestamps();
         });
     }

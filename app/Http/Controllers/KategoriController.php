@@ -10,7 +10,7 @@ class KategoriController extends Controller
 
     public function index()
     {
-        $kategori = Kategori::all();
+        $kategori = Kategori::paginate(4);
         return view('kategori.index', compact('kategori'));
     }
 
@@ -23,9 +23,11 @@ class KategoriController extends Controller
     {
         //validate form
         $this->validate($request, [
-            'nama_kategori' => 'required',
+            'nama_kategori' => 'required|unique:kategoris,nama_kategori',
             'deskripsi' => 'required',
 
+        ] ,[
+            'name_kategori.required' => 'Nama ini harus diisi'
         ]);
 
         $kategori = new Kategori();
