@@ -22,13 +22,6 @@
                             @enderror
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Deskripsi</label>
-                            <textarea class="w-full px-3 py-2 border rounded @error('deskripsi') border-red-500 @enderror" name="deskripsi" rows="3" placeholder="Deskripsi" required>{{ old('deskripsi') }}</textarea>
-                            @error('deskripsi')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                            @enderror
-                        </div>
 
                         <div class="flex justify-end">
                             <button type="submit" class="bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600">Simpan</button>

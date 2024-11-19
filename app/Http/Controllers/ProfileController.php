@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hobi;
+use App\Models\Artikel;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,16 +13,23 @@ class ProfileController extends Controller
 
     public function index()
     {
-        $hobi = Hobi::all();
+
         $profile = Profile::where('id_user', Auth::id())->first();
-        return view('profile.index', compact('profile', 'hobi'));
+        $artikel = Artikel::where('id_user', Auth::id())->paginate(3);
+        return view('profile.index', compact('profile', 'artikel'));
+
     }
 
     public function create()
     {
-        $hobi = Hobi::all();
+        $existingProfile = Profile::where('id_user', Auth::id())->first();
+
+        if ($existingProfile) {
+            return redirect()->route('profile.index')->with('error', 'Anda sudah memiliki profil.');
+        }
+
         $user = User::all();
-        return view('profile.create', compact('user', 'hobi'));
+        return view('profile.create', compact('user'));
     }
 
     public function store(Request $request)
@@ -61,7 +68,7 @@ class ProfileController extends Controller
 
         $profile->save();
 
-        return redirect()->route('profile.index', $profile->id)
+        return redirect()->route('profile.index')
             ->with('success', 'Profil berhasil dibuat.');
     }
 
@@ -103,7 +110,6 @@ class ProfileController extends Controller
         }
 
         $profile->save();
-
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
     }
 

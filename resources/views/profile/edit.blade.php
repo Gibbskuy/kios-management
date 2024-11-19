@@ -62,43 +62,28 @@
                                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                                 @enderror
                             </div>
-                             <div class="mb-4">
-                            <label for="" class="font-bold mb-2">Agama</label>
-                            <select name="agama" class="form-control select @error('agama') is-invalid @enderror">
-                                <option value="">Pilih Agama</option>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Budha">Budha</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Konghucu">Konghucu</option>
-                            </select>
-                            @error('agama')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
+                            <div class="mb-4">
+                                <label for="" class="font-bold mb-2">Agama</label>
+                                <select name="agama" class="form-control select @error('agama') is-invalid @enderror">
+                                    <option value="">Pilih Agama</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Budha">Budha</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                                @error('agama')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
 
-                           <div class="mb-2">
-                            <label for="hobi">Hobi</label>
-                            <select name="hobi[]" class="form-select" multiple>
-                                @foreach ($hobi as $data)
-                                <option value="{{ $data->id }}" {{ in_array($data->id, $selecthobi) ? 'selected' : ''
-                                    }}>{{ $data->hobi }}
-                                </option>
-                                @endforeach
-                            </select>
-                            @error('hobi')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Alamat</label>
                                 <textarea name="alamat" rows="3"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('alamat') border-red-500 @enderror"
-                                    placeholder="alamat" required>{{ old('alamat') }}</textarea>
+                                    placeholder="Alamat" required>{{ old('alamat') }}</textarea>
                                 @error('alamat')
                                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                                 @enderror
@@ -107,8 +92,8 @@
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Foto</label>
                                 @if ($profile->foto)
-                                    <p><img src="{{ asset('images/profile/' . $profile->foto) }}" alt="foto"
-                                            class="w-48"></p>
+                                    <img src="{{ asset('images/profile/' . $profile->foto) }}" alt="foto"
+                                            class="w-48">
                                 @endif
                                 <input type="file" name="foto"
                                     class="block w-full text-sm mt-4 text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 @error('foto') border-red-500 @enderror">

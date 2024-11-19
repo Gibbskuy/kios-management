@@ -9,8 +9,8 @@ class Kategori extends Model
 {
     use HasFactory;
 
-    public function Produk (){
-        return $this->hasMany(Produk::class);
+    public function Artikel (){
+        return $this->hasOne(Artikel::class);
     }
 
 }

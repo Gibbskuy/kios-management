@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artikel;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,16 @@ class KategoriController extends Controller
     public function index()
     {
         $kategori = Kategori::paginate(4);
-        return view('kategori.index', compact('kategori'));
+        $artikel = Artikel::all();
+        return view('kategori.index', compact('kategori', 'artikel'));
+    }
+
+    public function filterByCategory($id)
+    {
+        $kategori = Kategori::paginate(4);
+        $artikel = Artikel::where('id_kategori', $id)->paginate(3);
+
+        return view('kategori.index', compact('kategori', 'artikel'));
     }
 
     public function create()
@@ -24,15 +34,13 @@ class KategoriController extends Controller
         //validate form
         $this->validate($request, [
             'nama_kategori' => 'required|unique:kategoris,nama_kategori',
-            'deskripsi' => 'required',
 
-        ] ,[
-            'name_kategori.required' => 'Nama ini harus diisi'
+        ], [
+            'name_kategori.required' => 'Nama ini harus diisi',
         ]);
 
         $kategori = new Kategori();
         $kategori->nama_kategori = $request->nama_kategori;
-        $kategori->deskripsi = $request->deskripsi;
 
         $kategori->save();
         return redirect()->route('kategori.index');
@@ -53,12 +61,10 @@ class KategoriController extends Controller
     {
         $this->validate($request, [
             'nama_kategori' => 'required',
-            'deskripsi' => 'required',
         ]);
 
         $kategori = Kategori::findOrFail($id);
         $kategori->nama_kategori = $request->nama_kategori;
-        $kategori->deskripsi = $request->deskripsi;
 
         $kategori->save();
         return redirect()->route('kategori.index');

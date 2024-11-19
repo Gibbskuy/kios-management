@@ -13,7 +13,4 @@ class Profile extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function hobi (){
-        return $this->belongsTo(Hobi::class);
-    }
 }
