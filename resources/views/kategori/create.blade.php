@@ -12,9 +12,7 @@
                     </div>
 
                     <div class="p-6">
-                        @can('kategori-create')
                             <form action="{{ route('kategori.store') }}" method="POST" enctype="multipart/form-data">
-                            @endcan
                             @csrf
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-bold mb-2">Nama Kategori</label>
@@ -25,17 +23,7 @@
                                     <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                 @enderror
                             </div>
-
-
-                            {{-- <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Image</label>
-                            <input type="file" class="w-full px-3 py-2 border rounded @error('image') border-red-500 @enderror" name="image" value="{{ old('image') }}">
-                            @error('image')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                            @enderror
-                        </div> --}}
-
-                            <div class="flex justify-end">
+                            <div  class="flex items-center justify-between">
                                 <button type="submit"
                                     class="bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600">Simpan</button>
                             </div>

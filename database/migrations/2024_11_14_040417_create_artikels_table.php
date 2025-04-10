@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->foreignId('id_kategori')->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->text('read_by')->nullable();
             $table->timestamps();
         });
     }

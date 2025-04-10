@@ -5,20 +5,24 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('home');
 });
 
+Route::resource('artikel', App\Http\Controllers\ArtikelController::class);
+Route::get('/artikel/{slug}', [ArtikelController::class, 'show'])->name('artikel.show');
+Route::resource('kategori', App\Http\Controllers\KategoriController::class);
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('kategori', App\Http\Controllers\KategoriController::class)->middleware('auth');
 Route::get('/kategori/{id}/filter', [KategoriController::class, 'filterByCategory'])->name('kategori.filter');
 Route::resource('profile', App\Http\Controllers\ProfileController::class)->middleware('auth');
-Route::resource('artikel', App\Http\Controllers\ArtikelController::class)->middleware('auth');
 
 Route::get('/password/edit', [PasswordController::class, 'edit'])->middleware('auth')->name('password.edit');
 Route::post('/password/update', [PasswordController::class, 'update'])->middleware('auth')->name('password.update1');

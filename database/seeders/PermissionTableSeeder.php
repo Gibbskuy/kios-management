@@ -2,46 +2,51 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+
 class PermissionTableSeeder extends Seeder
 {
     public function run(): void
     {
-        //satrt artikel
-        $artikel_read = Permission::create(['name' => 'artikel-read']);
-        $artikel_create = Permission::create(['name' => 'artikel-create']);
-        $prdouk_edit = Permission::create(['name' => 'artikel-edit']);
-        $artikel_delete = Permission::create(['name' => 'artikel-delete']);
-        // End Permission artikel
+        // === Buat permission artikel (dengan firstOrCreate)
+        $artikel_read   = Permission::firstOrCreate(['name' => 'artikel-read', 'guard_name' => 'web']);
+        $artikel_create = Permission::firstOrCreate(['name' => 'artikel-create', 'guard_name' => 'web']);
+        $artikel_edit   = Permission::firstOrCreate(['name' => 'artikel-edit', 'guard_name' => 'web']);
+        $artikel_delete = Permission::firstOrCreate(['name' => 'artikel-delete', 'guard_name' => 'web']);
 
-        $user = Role::create(['name' => 'User']);
-        $user->givePermissionTo($artikel_read, $artikel_create);
+        // === Buat Role User & Admin
+        $userRole = Role::firstOrCreate(['name' => 'User']);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
 
-        $admin = Role::create(['name' => 'Admin']);
-        $admin->givePermissionTo($artikel_read, $artikel_create, $prdouk_edit, $artikel_delete);
+        // === Assign permission ke role
+        $userRole->syncPermissions([$artikel_read, $artikel_create]);
+        $adminRole->syncPermissions([$artikel_read, $artikel_create, $artikel_edit, $artikel_delete]);
 
-        $admin = User::create([
-            'name' => 'admin',
+        // === Buat user admin (hanya jika belum ada)
+        $admin = User::firstOrCreate([
             'email' => 'admin@gmail.com',
+        ], [
+            'name' => 'admin',
             'password' => Hash::make('12345678'),
         ]);
 
-        $admin->assignRole('Admin');
+        $admin->assignRole($adminRole);
 
-        $profile = Profile::create([
-          'id_user' => $admin->id,
-          'nama_lengkap' => 'Admin',
-          'jk' => 'waria',
-          'tgl' => '1933-03-14',
-          'alamat' => 'Newyerk',
-          'foto' => 'default.png',
-          'agama' => 'ateis',
+        // === Buat profile admin
+        Profile::firstOrCreate([
+            'id_user' => $admin->id,
+        ], [
+            'nama_lengkap' => 'Admin',
+            'jk' => 'waria',
+            'tgl' => '1933-03-14',
+            'alamat' => 'Newyerk',
+            'foto' => 'default.png',
+            'agama' => 'ateis',
         ]);
     }
 }

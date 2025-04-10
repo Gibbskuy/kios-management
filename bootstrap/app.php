@@ -20,3 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+    $app->middleware([
+        \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    ]);
+
+    $router->group(['prefix' => 'api'], function () use ($router) {
+        require base_path('routes/api.php');
+    });
+

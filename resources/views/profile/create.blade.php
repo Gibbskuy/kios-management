@@ -66,14 +66,9 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-5">
-                                <label class="block text-gray-700 text-sm font-semibold mb-2">Alamat</label>
-                                <textarea name="alamat" rows="3"
-                                    class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 @error('alamat') border-red-500 @enderror"
-                                    placeholder="Alamat" required>{{ old('alamat') }}</textarea>
-                                @error('alamat')
-                                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                                @enderror
+                            <div class="mb-4">
+                                <label for="alamat" class="block mb-2 font-semibold">Alamat</label>
+                                <textarea name="alamat" id="alamat" class="w-full p-2 border border-gray-300 rounded-md" rows="10">{{ old('alamat', $artikel->alamat ?? '') }}</textarea>
                             </div>
 
                              <div class="mb-4">

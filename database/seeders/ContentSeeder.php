@@ -8,20 +8,18 @@ use Spatie\Permission\Models\Role;
 
 class ContentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //start content
-        $content_read = Permission::create(['name' => 'content-read']);
-        $content_create = Permission::create(['name' => 'content-create']);
-        $content_edit = Permission::create(['name' => 'content-edit']);
-        $content_delete = Permission::create(['name' => 'content-delete']);
-        // End Permission content
+        // Daftar nama permission untuk content
+        $permissions = ['content-read', 'content-create', 'content-edit', 'content-delete'];
+
+        foreach ($permissions as $permissionName) {
+            Permission::firstOrCreate(
+                ['name' => $permissionName, 'guard_name' => 'web']
+            );
+        }
 
         $admin = Role::firstOrCreate(['name' => 'Admin']);
-        $admin->givePermissionTo($content_read, $content_create, $content_edit, $content_delete);
-
+        $admin->givePermissionTo($permissions); // bisa langsung array
     }
 }
