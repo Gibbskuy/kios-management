@@ -8,6 +8,12 @@ use App\Http\Controllers\ArtikelController;
 
 Route::get('/artikel', [ArtikelController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->get('/profile', function (Request $request) {
+    return response()->json([
+        'data' => $request->user()
+    ]);
+});
+Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 

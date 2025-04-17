@@ -38,7 +38,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             <div class="flex justify-center gap-2">
-                                                <a href="{{ route('artikel.show', $item->id) }}"
+                                                <a href="{{ route('artikel.show', $item->slug) }}"
                                                     class="text-blue-600 hover:text-blue-800" title="Lihat">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -159,7 +159,7 @@
                                             </a>
                                             @can('artikel-edit')
                                                 <div class="flex space-x-2">
-                                                    <a href="{{ route('artikel.edit', $data->id) }}"
+                                                    <a href="{{ route('artikel.edit', $data->slug) }}"
                                                         class="text-green-600 hover:text-green-800" title="Edit">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -235,7 +235,7 @@
                                             </a>
                                             @can('artikel-edit')
                                                 <div class="flex space-x-2">
-                                                    <a href="{{ route('artikel.edit', $data->id) }}"
+                                                    <a href="{{ route('artikel.edit', $data->slug) }}"
                                                         class="text-green-600 hover:text-green-800" title="Edit">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">

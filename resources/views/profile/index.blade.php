@@ -132,7 +132,7 @@
                             </div>
 
                             <div class="flex flex-wrap gap-2">
-                                <a href="{{ route('artikel.show', $data->id) }}"
+                                <a href="{{ route('artikel.show', $data->slug) }}"
                                    class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>

@@ -4,19 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Content;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreContentRequest;
-use App\Http\Requests\UpdateContentRequest;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+
 
 class ContentController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:content-read', ['only' => ['index']]);
-        $this->middleware('permission:content-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:content-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:content-delete', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:content-read', ['only' => ['index']]);
+    //     $this->middleware('permission:content-create', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:content-edit', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:content-delete', ['only' => ['destroy']]);
+    // }
 
     public function index()
     {

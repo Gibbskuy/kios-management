@@ -139,10 +139,8 @@
 @endsection
 
 @push('scripts')
-   <!-- Place the first <script> tag in your HTML's <head> -->
 <script src="https://cdn.tiny.cloud/1/h9hyszltud55yfxoblvg0pt38pk5rdy3rvlcyqlijkwjrv28/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
 <script>
   tinymce.init({
     selector: 'textarea',

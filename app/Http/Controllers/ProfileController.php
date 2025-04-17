@@ -16,7 +16,12 @@ class ProfileController extends Controller
 
         $profile = Profile::where('id_user', Auth::id())->first();
         $artikel = Artikel::where('id_user', Auth::id())->paginate(3);
-        return view('profile.index', compact('profile', 'artikel'));
+        // return view('profile.index', compact('profile', 'artikel'));
+
+        return response()->json([
+            'message' => 'Data Berhasil',
+            'data' => $profile,
+        ], 200);
 
     }
 

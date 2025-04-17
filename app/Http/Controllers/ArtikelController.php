@@ -7,7 +7,6 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
 
 class ArtikelController extends Controller
 {
@@ -21,34 +20,47 @@ class ArtikelController extends Controller
     // }
 
     public function index(Request $request)
-    {
-        $artikelPending = Artikel::where('status', 'pending')->paginate(10);
-        $artikel        = Artikel::where('status', 'approved')->paginate(3);
-        $artikelall     = Artikel::where('status', 'approved')->paginate(6);
-        $artikell       = Artikel::where('status', 'rejected')->paginate(3);
-        $id_kategori    = $request->input('id_kategori');
-        $kategori       = Kategori::all();
+{
+    $search = $request->input('search');
+    $id_kategori = $request->input('id_kategori');
+    $kategori = Kategori::all();
 
-        if ($id_kategori) {
-            $artikel = Artikel::where('id_kategori', $id_kategori)->paginate(4);
-        } else {
-            $artikel = Artikel::paginate(4);
-        }
+    $artikelQuery = Artikel::query();
 
-        return view('artikel.index', compact(
-            'artikel',
-            'kategori',
-            'artikelPending',
-            'artikell',
-            'id_kategori',
-            'artikelall'
-        ));
-
-        // return response()->json([
-        //     'message' => 'Data Berhasil',
-        //     'data' => $artikel,
-        // ], 200);
+    if ($search) {
+        $artikelQuery->where(function($query) use ($search) {
+            $query->where('judul', 'like', "%{$search}%")
+                  ->orWhere('deskripsi', 'like', "%{$search}%");
+        });
     }
+
+    if ($id_kategori) {
+        $artikelQuery->where('id_kategori', $id_kategori);
+    }
+
+    $artikelQuery->where('status', 'approved');
+
+    $artikel = $artikelQuery->paginate(4);
+
+    $artikelPending = Artikel::where('status', 'pending')->paginate(10);
+    $artikelall = Artikel::where('status', 'approved')->paginate(6);
+    $artikell = Artikel::where('status', 'rejected')->paginate(3);
+
+    // return view('artikel.index', compact(
+    //     'artikel',
+    //     'kategori',
+    //     'artikelPending',
+    //     'artikell',
+    //     'id_kategori',
+    //     'artikelall',
+    //     'search'
+    // ));
+
+    return response()->json([
+            'message' => 'Data Berhasil',
+            'data' => $artikel,
+        ], 200);
+}
 
     public function create()
     {
@@ -71,7 +83,6 @@ class ArtikelController extends Controller
         $originalSlug = $slug;
         $counter      = 1;
 
-        // Cek apakah slug sudah ada di database
         while (Artikel::where('slug', $slug)->exists()) {
             $slug = $originalSlug . '-' . $counter++;
         }
@@ -127,10 +138,11 @@ class ArtikelController extends Controller
         return view('artikel.show', compact('artikel'));
     }
 
-    public function edit($id)
+    public function edit($slug)
     {
-        $artikel  = Artikel::findOrFail($id);
+        $artikel  = Artikel::where('slug', $slug)->firstOrFail();
         $kategori = Kategori::all();
+
         return view('artikel.edit', compact('artikel', 'kategori'));
     }
 
